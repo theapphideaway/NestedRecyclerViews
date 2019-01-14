@@ -28,12 +28,6 @@ class MainActivity : AppCompatActivity() {
         first_recycler_view.adapter = firstAdapter
         first_recycler_view.layoutManager = layoutManager
 
-        button.setOnClickListener {
-            count++
-            val first = First()
-            first.Title = count.toString()
-            firstList!!.add(first)
-        }
 
     }
 
