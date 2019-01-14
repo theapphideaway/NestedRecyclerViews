@@ -27,23 +27,12 @@ class ChildAdapter(private val childList: ArrayList<Child>, private val context:
 
     override fun onBindViewHolder(holder: ChildAdapter.ViewHolder, position: Int) {
         holder.bindList(childList[position])
-
-        holder.itemView.setOnClickListener { goToChild(childList[position], position) }
-        childList[position].Title
-    }
-
-    fun goToChild(child: Child, position: Int) {
-        var intent = Intent(context, ChildActivity::class.java)
-        intent.putExtra("Id", position + 1)
-        intent.putExtra("Title", child.Title)
-        ContextCompat.startActivity(context, intent, null)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindList(child: Child) {
 
             var itemText: TextView = itemView.findViewById(R.id.main_item) as TextView
-
 
             itemText.text = child.Title
         }
