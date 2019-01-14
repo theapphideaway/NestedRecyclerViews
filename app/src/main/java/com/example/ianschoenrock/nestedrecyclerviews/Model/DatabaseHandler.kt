@@ -6,6 +6,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 
 
 class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -18,9 +19,10 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     private val TABLE_CHILD_LIST_ID = "id"
     private val TABLE_PARENT_LIST_ID = "parent_id"
     private val TABLE_CHILD_LIST_NAME = "name"
+    private val myContext = context
 
 
-    val allParentListItem: List<First>
+    val allParentListItem: ArrayList<First>
         get() {
             val result = ArrayList<First>()
 
@@ -51,6 +53,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
         db.execSQL(CREATE_MAIN_LIST_TABLE)
         db.execSQL(CREATE_TABLE_CHILD_LIST)
+
+        Toast.makeText(myContext, " database is created", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -62,7 +66,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
 
-    private fun addListItem(item: First) {
+    fun addListItem(item: First) {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(TABLE_LIST_NAME, item.Child!!.Title)
@@ -70,7 +74,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         db.close()
     }
 
-    private fun addChildListItem(item: Child) {
+    fun addChildListItem(item: Child) {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(TABLE_CHILD_LIST_NAME, item.Title)
@@ -79,7 +83,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         db.close()
     }
 
-    private fun deleteParentItem(id: Int) {
+    fun deleteParentItem(id: Int) {
         val db = this.writableDatabase
         db.delete(TABLE_LIST, "$TABLE_LIST_ID = ?", arrayOf(id.toString()))
         db.close()
@@ -92,17 +96,17 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
 
-    private fun getIntByColumnName(cursor: Cursor, tableColumn: String): Int {
+    fun getIntByColumnName(cursor: Cursor, tableColumn: String): Int {
         return cursor.getInt(cursor.getColumnIndex(tableColumn))
     }
 
 
-    private fun getDoubleByColumName(cursor: Cursor, tableColumn: String): Double {
+    fun getDoubleByColumName(cursor: Cursor, tableColumn: String): Double {
         return cursor.getDouble(cursor.getColumnIndex(tableColumn))
     }
 
 
-    private fun getStringByColumName(cursor: Cursor, tableColumn: String): String {
+    fun getStringByColumName(cursor: Cursor, tableColumn: String): String {
         return cursor.getString(cursor.getColumnIndex(tableColumn))
     }
 

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.example.ianschoenrock.nestedrecyclerviews.Model.Child
+import com.example.ianschoenrock.nestedrecyclerviews.Model.DatabaseHandler
 import com.example.ianschoenrock.nestedrecyclerviews.Model.First
 import com.example.ianschoenrock.nestedrecyclerviews.Recycler.FirstAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,6 +39,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
+        var dbHandler = DatabaseHandler(this)
+
+
+
         if(item != null){
             when(item.itemId){
                 R.id.main_add ->{
@@ -47,8 +52,11 @@ class MainActivity : AppCompatActivity() {
                     val child = Child()
                     child.Title = "$count"
                     first.Child = child
-                    firstList!!.add(first)
+                    first.Id = count
+                    firstList = dbHandler.allParentListItem
+                    dbHandler.addListItem(first)
                     firstAdapter!!.notifyDataSetChanged()
+                    loadQuery(first)
 
                 }
             }
@@ -56,4 +64,27 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
+    fun loadQuery(first: First){
+        var dbHandler = DatabaseHandler(this)
+
+        dbHandler.allParentListItem
+//        val projections= arrayOf("Id","Child")
+//        val selectionArgs= arrayOf(title)
+//        val cursor=dbManager.query(projections,"Child like ?",selectionArgs,"Child")
+//        todoList!!.clear()
+//        if(cursor.moveToFirst()){
+//
+//            do{
+//                //try writing this with the no constructor in the notes class
+//                val ID=cursor.getInt(cursor.getColumnIndex("Id"))
+//                val Title=cursor.getString(cursor.getColumnIndex("ListTitle"))
+//                val IsChecked = cursor.getInt(cursor.getColumnIndex("IsChecked"))
+//
+//                todoList!!.add(ToDo(ID,Title, IsChecked))
+//
+//            }while (cursor.moveToNext())
+//        }
+    }
+
 }
