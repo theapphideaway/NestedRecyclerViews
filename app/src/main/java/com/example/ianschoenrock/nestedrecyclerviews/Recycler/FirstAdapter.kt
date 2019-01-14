@@ -28,13 +28,13 @@ RecyclerView.Adapter<FirstAdapter.ViewHolder>(){
         holder.bindList(firstList[position])
 
         holder.itemView.setOnClickListener { goToChild(firstList[position], position) }
-        firstList[position].Title
+
     }
 
     fun goToChild(first:First, position:Int){
         var intent = Intent(context, ChildActivity::class.java)
         intent.putExtra("Id", position + 1)
-        intent.putExtra("Title", first.Title)
+        intent.putExtra("Title", first.Child!!.Title)
         startActivity(context, intent, null)
     }
 
@@ -44,7 +44,7 @@ RecyclerView.Adapter<FirstAdapter.ViewHolder>(){
             var itemText: TextView = itemView.findViewById(R.id.main_item) as TextView
 
 
-            itemText.text = first.Title
+            itemText.text = first.Child!!.Title
         }
     }
 }

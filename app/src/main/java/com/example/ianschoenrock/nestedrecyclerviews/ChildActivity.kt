@@ -56,7 +56,7 @@ class ChildActivity : AppCompatActivity() {
 
                     count++
                     val child = Child()
-                    child.Title = count.toString()
+                    child.Item = count.toString()
                     childList!!.add(child)
                     childAdapter!!.notifyDataSetChanged()
 

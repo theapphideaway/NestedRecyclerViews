@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import com.example.ianschoenrock.nestedrecyclerviews.Model.Child
 import com.example.ianschoenrock.nestedrecyclerviews.Model.First
 import com.example.ianschoenrock.nestedrecyclerviews.Recycler.FirstAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,7 +44,9 @@ class MainActivity : AppCompatActivity() {
 
                     count++
                     val first = First()
-                    first.Title = count.toString()
+                    val child = Child()
+                    child.Title = "$count"
+                    first.Child = child
                     firstList!!.add(first)
                     firstAdapter!!.notifyDataSetChanged()
 
