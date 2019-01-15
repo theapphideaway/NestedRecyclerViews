@@ -18,12 +18,13 @@ class MainActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var firstList: ArrayList<First>? = null
     private var count = 0
+    var dbHandler = DatabaseHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        firstList = ArrayList()
+        firstList = dbHandler.allParentListItem
         layoutManager = LinearLayoutManager(this)
         firstAdapter = FirstAdapter(firstList!!, this)
 
@@ -53,10 +54,15 @@ class MainActivity : AppCompatActivity() {
                     child.Title = "$count"
                     first.Child = child
                     first.Id = count
-                    firstList = dbHandler.allParentListItem
                     dbHandler.addListItem(first)
+
+                    firstList = dbHandler.allParentListItem
+                    firstAdapter = FirstAdapter(firstList!!, this)
+                    first_recycler_view.adapter = firstAdapter
+                    first_recycler_view.layoutManager = layoutManager
+
                     firstAdapter!!.notifyDataSetChanged()
-                    loadQuery(first)
+                    loadQuery()
 
                 }
             }
@@ -65,10 +71,10 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun loadQuery(first: First){
+    fun loadQuery(){
         var dbHandler = DatabaseHandler(this)
 
-        dbHandler.allParentListItem
+//        dbHandler.allParentListItem
 //        val projections= arrayOf("Id","Child")
 //        val selectionArgs= arrayOf(title)
 //        val cursor=dbManager.query(projections,"Child like ?",selectionArgs,"Child")

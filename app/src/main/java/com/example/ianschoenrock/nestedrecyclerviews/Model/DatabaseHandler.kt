@@ -31,7 +31,9 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
             while (cursor.moveToNext()) {
                 val item = First()
+                val child = Child()
                 item.Id = (getIntByColumnName(cursor, TABLE_CHILD_LIST_ID))
+                item.Child = child
                 item.Child!!.Title = (getStringByColumName(cursor, TABLE_LIST_NAME))
                 result.add(item)
             }
@@ -83,6 +85,13 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
         db.close()
     }
 
+    //TODO return the list of child items 
+    fun getChildListByParentId(id: Int): ArrayList<Child>{
+        var result = ArrayList<Child>()
+
+        return result
+    }
+
     fun deleteParentItem(id: Int) {
         val db = this.writableDatabase
         db.delete(TABLE_LIST, "$TABLE_LIST_ID = ?", arrayOf(id.toString()))
@@ -97,7 +106,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
 
     fun getIntByColumnName(cursor: Cursor, tableColumn: String): Int {
-        return cursor.getInt(cursor.getColumnIndex(tableColumn))
+        var result = cursor.getInt(cursor.getColumnIndex(tableColumn))
+        return result
     }
 
 

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.example.ianschoenrock.nestedrecyclerviews.Model.Child
+import com.example.ianschoenrock.nestedrecyclerviews.Model.DatabaseHandler
 import com.example.ianschoenrock.nestedrecyclerviews.Model.First
 import com.example.ianschoenrock.nestedrecyclerviews.R
 import com.example.ianschoenrock.nestedrecyclerviews.Recycler.ChildAdapter
@@ -20,6 +21,8 @@ class ChildActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var childList: ArrayList<Child>? = null
     private var count = 0
+
+    var dbHandler = DatabaseHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +59,11 @@ class ChildActivity : AppCompatActivity() {
 
                     count++
                     val child = Child()
-                    child.Item = count.toString()
+                    child.Title = count.toString()
                     childList!!.add(child)
+
+                    dbHandler.addChildListItem(child)
+
                     childAdapter!!.notifyDataSetChanged()
 
                 }
