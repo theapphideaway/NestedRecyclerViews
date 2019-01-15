@@ -18,7 +18,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     private val TABLE_CHILD_LIST = "child_list"
     private val TABLE_CHILD_LIST_ID = "id"
     private val TABLE_PARENT_LIST_ID = "parent_id"
-    private val TABLE_CHILD_LIST_NAME = "name"
+    private val TABLE_CHILD_LIST_NAME = "child_list_name"
     private val myContext = context
 
 
@@ -68,27 +68,47 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
 
-    fun addListItem(item: First) {
+    fun addListItem(first: First) {
         val db = this.writableDatabase
         val values = ContentValues()
-        values.put(TABLE_LIST_NAME, item.Child!!.Title)
+        values.put(TABLE_LIST_NAME, first.Child!!.Title)
         db.insert(TABLE_LIST, null, values)
         db.close()
     }
 
-    fun addChildListItem(item: Child) {
+    fun addChildListItem(child: Child, id:Int) {
         val db = this.writableDatabase
         val values = ContentValues()
-        values.put(TABLE_CHILD_LIST_NAME, item.Title)
-        values.put(TABLE_PARENT_LIST_ID, item.Id)
+        values.put(TABLE_CHILD_LIST_NAME, child.Title)
+        values.put(TABLE_PARENT_LIST_ID, id)
         db.insert(TABLE_LIST, null, values)
         db.close()
     }
 
-    //TODO return the list of child items 
+    //TODO return the list of child items
+
+    //child.id id the id it is looking for
     fun getChildListByParentId(id: Int): ArrayList<Child>{
+        val db = this.readableDatabase
         var result = ArrayList<Child>()
 
+        //TODO Make sure this statement is correct
+        var selectAll = "SELECT * FROM $TABLE_CHILD_LIST WHERE $TABLE_PARENT_LIST_ID = $id"
+
+        //if selectAll statement is correct you should get the values back
+        var cursor: Cursor = db.rawQuery(selectAll, null)
+
+        if (cursor != null) {
+            //if you get the values back you should be able to loop through them and add them to a list
+            while (cursor.moveToNext()) {
+                val child = Child()
+                child.Title = cursor.getString(cursor.getColumnIndex(TABLE_CHILD_LIST_ID))
+                result.add(child)
+
+            }
+        }
+
+        // the list should display the results of the cursor
         return result
     }
 

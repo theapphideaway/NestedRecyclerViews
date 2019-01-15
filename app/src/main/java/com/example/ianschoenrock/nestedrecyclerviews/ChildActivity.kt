@@ -21,6 +21,7 @@ class ChildActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var childList: ArrayList<Child>? = null
     private var count = 0
+    private var id = 0
 
     var dbHandler = DatabaseHandler(this)
 
@@ -28,7 +29,7 @@ class ChildActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_child)
 
-        var id = 0
+
 
         try{
             var bundle:Bundle=intent.extras
@@ -38,7 +39,7 @@ class ChildActivity : AppCompatActivity() {
             }
         }catch (ex:Exception){}
 
-        childList = ArrayList()
+        childList = dbHandler.getChildListByParentId(id)
         layoutManager = LinearLayoutManager(this)
         childAdapter = ChildAdapter(childList!!, this)
 
@@ -60,9 +61,13 @@ class ChildActivity : AppCompatActivity() {
                     count++
                     val child = Child()
                     child.Title = count.toString()
-                    childList!!.add(child)
+                    child.Id = id
 
-                    dbHandler.addChildListItem(child)
+                    dbHandler.addChildListItem(child, id)
+                    childList = dbHandler.getChildListByParentId(id)
+                    childAdapter = ChildAdapter(childList!!, this)
+
+                    child_recycler_view.adapter = childAdapter
 
                     childAdapter!!.notifyDataSetChanged()
 
